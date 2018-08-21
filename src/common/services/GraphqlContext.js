@@ -1,6 +1,8 @@
 // @flow
 
 import DataLoader from 'dataloader';
+import idx from 'idx';
+import sha1 from 'sha1';
 
 import parseAcceptLanguage from './context/ParseAcceptLanguage';
 
@@ -60,6 +62,7 @@ export type GraphqlContextType = {|
     |},
   |},
   apiToken: ?string,
+  whoIAm: string,
   dataLoader: {|
     airline: DataLoader<string, ?Airline>,
     booking: DataLoader<number | string, Booking>,
@@ -101,16 +104,28 @@ export type GraphqlContextType = {|
  */
 const FAQ_CATEGORY_ID = '3';
 
-export function createContext(
-  token: ?string,
-  acceptLanguage: ?string,
-): GraphqlContextType {
+type ContextParameterType = {
+  token?: ?string,
+  acceptLanguage?: ?string,
+  request: {
+    ip: string,
+    headers: Object,
+  },
+};
+
+export function createContext({
+  token,
+  acceptLanguage,
+  request,
+}: ContextParameterType): GraphqlContextType {
   const bookings = new BookingsLoader(token);
   const locations = new LocationsLoader();
   const location = new LocationLoader();
   const hotelCities = new HotelCities();
 
   const [language, territory] = parseAcceptLanguage(acceptLanguage);
+  const userAgent = idx(request, _ => _.headers['user-agent']) || '';
+  const userIp = idx(request, _ => _.ip) || '';
 
   const locale = {
     language,
@@ -124,6 +139,7 @@ export function createContext(
   return {
     locale,
     apiToken: token,
+    whoIAm: sha1(userAgent + userIp),
     dataLoader: {
       airline: createAirlineLoader(),
       booking: createBookingLoader(token, bookings),

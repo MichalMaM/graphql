@@ -23,7 +23,12 @@ const legs = [
 ];
 
 it('returns unique list of carriers', async () => {
-  const context = createContext();
+  const context = createContext({
+    request: {
+      ip: '',
+      headers: {},
+    },
+  });
   // $FlowExpectedError: full Leg object is not needed for this test
   const carriers = await commonFields.carriers.resolve({ legs }, {}, context);
 

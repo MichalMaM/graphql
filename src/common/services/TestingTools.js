@@ -74,7 +74,14 @@ export const graphql = async (
     schema,
     query,
     null,
-    createContext('test_token', acceptLanguage),
+    createContext({
+      token: 'test_token',
+      acceptLanguage,
+      request: {
+        ip: '',
+        headers: {},
+      },
+    }),
     variables,
   );
 

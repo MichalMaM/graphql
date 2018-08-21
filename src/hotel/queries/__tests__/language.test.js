@@ -13,48 +13,89 @@ jest.mock('../../../common/services/JsonFetcher', () => ({
   },
 }));
 
+const fakeRequest = {
+  headers: {},
+  ip: '',
+};
+
 describe('availableHotel query', () => {
   it('should call API with czech language', async () => {
-    await graphql(schema, hotelQuery, null, createContext(), {
-      language: 'cs',
-    });
+    await graphql(
+      schema,
+      hotelQuery,
+      null,
+      createContext({ request: fakeRequest }),
+      {
+        language: 'cs',
+      },
+    );
     assertLanguage(calledUrl, 'cs');
   });
 
   it('should call API with special english language', async () => {
-    await graphql(schema, hotelQuery, null, createContext(), {
-      language: 'enus',
-    });
+    await graphql(
+      schema,
+      hotelQuery,
+      null,
+      createContext({ request: fakeRequest }),
+      {
+        language: 'enus',
+      },
+    );
     assertLanguage(calledUrl, 'en-us');
   });
 
   it('should not call API with language when language param is not set', async () => {
-    await graphql(schema, hotelQuery, null, createContext(), {
-      language: null,
-    });
+    await graphql(
+      schema,
+      hotelQuery,
+      null,
+      createContext({ request: fakeRequest }),
+      {
+        language: null,
+      },
+    );
     assertLanguage(calledUrl, null);
   });
 });
 
 describe('allAvailableHotels query', () => {
   it('should call API with czech language', async () => {
-    await graphql(schema, allHotelsQuery, null, createContext(), {
-      language: 'cs',
-    });
+    await graphql(
+      schema,
+      allHotelsQuery,
+      null,
+      createContext({ request: fakeRequest }),
+      {
+        language: 'cs',
+      },
+    );
     assertLanguage(calledUrl, 'cs');
   });
 
   it('should call API with special english language', async () => {
-    await graphql(schema, allHotelsQuery, null, createContext(), {
-      language: 'enus',
-    });
+    await graphql(
+      schema,
+      allHotelsQuery,
+      null,
+      createContext({ request: fakeRequest }),
+      {
+        language: 'enus',
+      },
+    );
     assertLanguage(calledUrl, 'en-us');
   });
 
   it('should not call API with language when language param is not set', async () => {
-    await graphql(schema, allHotelsQuery, null, createContext(), {
-      language: null,
-    });
+    await graphql(
+      schema,
+      allHotelsQuery,
+      null,
+      createContext({ request: fakeRequest }),
+      {
+        language: null,
+      },
+    );
     assertLanguage(calledUrl, null);
   });
 });

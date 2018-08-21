@@ -23,6 +23,7 @@
     "luxon": "^0.0.17",
     "node-fetch": "^1.7.1",
     "ramda": "^0.25.0",
+    "sha1": "^1.1.1",
     "validator": "^9.4.1"
   },
   "devDependencies": {
