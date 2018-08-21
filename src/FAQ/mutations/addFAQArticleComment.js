@@ -68,7 +68,7 @@ export default {
   resolve: async (
     _: mixed,
     { id, type: commentType, comment }: Object,
-    { dataLoader, locale }: GraphqlContextType,
+    { dataLoader, locale, whoIAm }: GraphqlContextType,
   ): Promise<FAQArticleType> => {
     const payload = {
       type: commentType,
@@ -92,6 +92,7 @@ export default {
     const commentUrl = `https://api.skypicker.com/knowledgebase/api/v1/articles/${originalId}/comment`;
     const response = await post(commentUrl, payload, {
       'Accept-Language': language,
+      'X-WHOIAM': whoIAm,
     });
     if (response.message !== successfulResponse.message) {
       throw new ProxiedError(

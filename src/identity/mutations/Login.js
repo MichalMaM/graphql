@@ -43,7 +43,7 @@ export default {
     }
 
     // now we have access token, let's rewrite IdentityLoader
-    const authContext = createContext(data.token);
+    const authContext = createContext({ token: data.token });
     context.dataLoader = authContext.dataLoader;
 
     return {

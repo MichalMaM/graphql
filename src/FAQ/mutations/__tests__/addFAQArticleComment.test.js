@@ -42,4 +42,17 @@ describe('FAQArticleComment mutation', () => {
       }),
     ).toMatchSnapshot();
   });
+  it('should provide X-WHOIAM', async () => {
+    const HttpRequest = require('../../../common/services/HttpRequest');
+    const spy = jest.spyOn(HttpRequest, 'post');
+    RestApiMock.onPost(
+      `https://api.skypicker.com/knowledgebase/api/v1/articles/${goodId}/comment`,
+    ).replyWithData({ message: 'yummy indeed' });
+    await graphql(commentMutation, {
+      articleId: globalId,
+      comment: 'hola',
+      type: 'OTHER',
+    });
+    expect(spy.mock.calls[0][2]['X-WHOIAM']).not.toHaveLength(0);
+  });
 });

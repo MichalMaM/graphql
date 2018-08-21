@@ -107,7 +107,7 @@ const FAQ_CATEGORY_ID = '3';
 type ContextParameterType = {
   token?: ?string,
   acceptLanguage?: ?string,
-  request: {
+  request?: {
     ip: string,
     headers: Object,
   },
